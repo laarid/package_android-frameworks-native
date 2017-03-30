@@ -58,6 +58,7 @@ TESTS =
 check_PROGRAMS =
 check_LIBRARIES =
 check_LTLIBRARIES =
+noinst_LIBRARIES =
 
 include $(srcdir)/gtest.mk
 include $(srcdir)/include/Makefile.inc
@@ -91,6 +92,7 @@ include $(srcdir)/opengl/libs/Android.mk
 # ---------------------
 include $(srcdir)/libs/gui/Android.mk
 # ---------------------
+include $(srcdir)/opengl/tests/Android.mk
 include $(srcdir)/services/sensorservice/Android.mk
 include $(srcdir)/services/surfaceflinger/Android.mk
 endif

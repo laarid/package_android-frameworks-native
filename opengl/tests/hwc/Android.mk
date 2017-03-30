@@ -12,137 +12,209 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOCAL_PATH:= $(call my-dir)
+if HAVE_GTEST
 
-include $(CLEAR_VARS)
-LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
+noinst_LIBRARIES += \
+    %reldir%/libhwcTest.a
 
-LOCAL_MODULE_TAGS := tests
-LOCAL_MODULE:= libhwcTest
-LOCAL_CFLAGS := -DGL_GLEXT_PROTOTYPES -DEGL_EGLEXT_PROTOTYPES -Wall -Wextra -Werror
-LOCAL_CXX_STL := libc++
-LOCAL_SRC_FILES:= hwcTestLib.cpp
-LOCAL_C_INCLUDES += system/extras/tests/include \
-    $(call include-path-for, opengl-tests-includes) \
+%canon_reldir%_libhwcTest_a_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(EGL_CFLAGS) \
+    $(HARDWARE_CFLAGS) \
+    $(UI_CFLAGS) \
+    -DGL_GLEXT_PROTOTYPES \
+    -DEGL_EGLEXT_PROTOTYPES \
+    -DANDROID_EGL_PLATFORM
 
-include $(BUILD_STATIC_LIBRARY)
+%canon_reldir%_libhwcTest_a_SOURCES = \
+    %reldir%/hwcTestLib.cpp \
+    %reldir%/hwcTestLib.h
 
-include $(CLEAR_VARS)
-LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
+%canon_reldir%_libhwcTest_a_CPPFLAGS += \
+    $(TESTUTIL_CFLAGS) \
+    -I$(srcdir)/opengl/tests/include
 
-LOCAL_MODULE:= hwcStress
-LOCAL_MODULE_TAGS := tests
-LOCAL_CFLAGS := -DGL_GLEXT_PROTOTYPES -DEGL_EGLEXT_PROTOTYPES -Wall -Wextra -Werror
-LOCAL_CXX_STL := libc++
-LOCAL_SRC_FILES:= hwcStress.cpp
+check_PROGRAMS += \
+    %reldir%/hwcStress
+if HAVE_DEV_BINDER
+TESTS += \
+    %reldir%/hwcStress
+endif
 
-LOCAL_SHARED_LIBRARIES := \
-    libcutils \
-    libEGL \
-    libGLESv2 \
-    libutils \
-    liblog \
-    libui \
-    libhardware \
+%canon_reldir%_hwcStress_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(EGL_CFLAGS) \
+    $(GLESV2_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    $(LOG_CFLAGS) \
+    $(UI_CFLAGS) \
+    $(HARDWARE_CFLAGS) \
+    -DGL_GLEXT_PROTOTYPES \
+    -DEGL_EGLEXT_PROTOTYPES \
+    -DANDROID_EGL_PLATFORM \
+    $(GTEST_CPPFLAGS)
 
-LOCAL_STATIC_LIBRARIES := \
-    libtestUtil \
-    libglTest \
-    libhwcTest \
+%canon_reldir%_hwcStress_SOURCES = \
+    %reldir%/hwcStress.cpp
 
-LOCAL_C_INCLUDES += \
-    system/extras/tests/include \
-    hardware/libhardware/include \
-    $(call include-path-for, opengl-tests-includes) \
+%canon_reldir%_hwcStress_LDADD = \
+    $(CUTILS_LIBS) \
+    $(EGL_LIBS) \
+    $(GLESV2_LIBS) \
+    $(UTILS_LIBS) \
+    $(LOG_LIBS) \
+    $(UI_LIBS) \
+    $(HARDWARE_LIBS)
 
-include $(BUILD_NATIVE_TEST)
+%canon_reldir%_hwcStress_LDADD += \
+    $(TESTUTIL_LIBS) \
+    opengl/tests/lib/libglTest.a \
+    %reldir%/libhwcTest.a \
+    $(GTEST_LIBS)
 
-include $(CLEAR_VARS)
-LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
+%canon_reldir%_hwcStress_DEPENDENCIES = \
+    $(GTEST_LIBS)
 
-LOCAL_MODULE:= hwcRects
-LOCAL_MODULE_TAGS := tests
-LOCAL_CFLAGS := -DGL_GLEXT_PROTOTYPES -DEGL_EGLEXT_PROTOTYPES -Wall -Wextra -Werror
-LOCAL_CXX_STL := libc++
-LOCAL_SRC_FILES:= hwcRects.cpp
+%canon_reldir%_hwcStress_CPPFLAGS += \
+    $(TESTUTIL_CFLAGS) \
+    -I$(srcdir)/opengl/tests/include
 
-LOCAL_SHARED_LIBRARIES := \
-    libcutils \
-    libEGL \
-    libGLESv2 \
-    libutils \
-    liblog \
-    libui \
-    libhardware \
+check_PROGRAMS += \
+    %reldir%/hwcRects
+if HAVE_DEV_BINDER
+TESTS += \
+    %reldir%/hwcRects
+endif
 
-LOCAL_STATIC_LIBRARIES := \
-    libtestUtil \
-    libglTest \
-    libhwcTest \
+%canon_reldir%_hwcRects_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(EGL_CFLAGS) \
+    $(GLESV2_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    $(LOG_CFLAGS) \
+    $(UI_CFLAGS) \
+    $(HARDWARE_CFLAGS) \
+    -DGL_GLEXT_PROTOTYPES \
+    -DEGL_EGLEXT_PROTOTYPES \
+    -DANDROID_EGL_PLATFORM \
+    $(GTEST_CPPFLAGS)
 
-LOCAL_C_INCLUDES += \
-    system/extras/tests/include \
-    hardware/libhardware/include \
-    $(call include-path-for, opengl-tests-includes) \
+%canon_reldir%_hwcRects_SOURCES = \
+    %reldir%/hwcRects.cpp
 
-include $(BUILD_NATIVE_TEST)
+%canon_reldir%_hwcRects_LDADD = \
+    $(CUTILS_LIBS) \
+    $(EGL_LIBS) \
+    $(GLESV2_LIBS) \
+    $(UTILS_LIBS) \
+    $(LOG_LIBS) \
+    $(UI_LIBS) \
+    $(HARDWARE_LIBS)
 
-include $(CLEAR_VARS)
-LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
+%canon_reldir%_hwcRects_LDADD += \
+    $(TESTUTIL_LIBS) \
+    opengl/tests/lib/libglTest.a \
+    %reldir%/libhwcTest.a \
+    $(GTEST_LIBS)
 
-LOCAL_MODULE:= hwcColorEquiv
-LOCAL_MODULE_TAGS := tests
-LOCAL_CFLAGS := -DGL_GLEXT_PROTOTYPES -DEGL_EGLEXT_PROTOTYPES -Wall -Wextra -Werror
-LOCAL_CXX_STL := libc++
-LOCAL_SRC_FILES:= hwcColorEquiv.cpp
+%canon_reldir%_hwcRects_DEPENDENCIES = \
+    $(GTEST_LIBS)
 
-LOCAL_SHARED_LIBRARIES := \
-    libcutils \
-    libEGL \
-    libGLESv2 \
-    libutils \
-    liblog \
-    libui \
-    libhardware \
+%canon_reldir%_hwcRects_CPPFLAGS += \
+    $(TESTUTIL_CFLAGS) \
+    -I$(srcdir)/opengl/tests/include
 
-LOCAL_STATIC_LIBRARIES := \
-    libtestUtil \
-    libglTest \
-    libhwcTest \
+check_PROGRAMS += \
+    %reldir%/hwcColorEquiv
+if HAVE_DEV_BINDER
+TESTS += \
+    %reldir%/hwcColorEquiv
+endif
 
-LOCAL_C_INCLUDES += \
-    system/extras/tests/include \
-    hardware/libhardware/include \
-    $(call include-path-for, opengl-tests-includes) \
+%canon_reldir%_hwcColorEquiv_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(EGL_CFLAGS) \
+    $(GLESV2_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    $(LOG_CFLAGS) \
+    $(UI_CFLAGS) \
+    $(HARDWARE_CFLAGS) \
+    -DGL_GLEXT_PROTOTYPES \
+    -DEGL_EGLEXT_PROTOTYPES \
+    $(GTEST_CPPFLAGS)
 
-include $(BUILD_NATIVE_TEST)
+%canon_reldir%_hwcColorEquiv_SOURCES = \
+    %reldir%/hwcColorEquiv.cpp
 
-include $(CLEAR_VARS)
-LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
+%canon_reldir%_hwcColorEquiv_LDADD = \
+    $(CUTILS_LIBS) \
+    $(EGL_LIBS) \
+    $(GLESV2_LIBS) \
+    $(UTILS_LIBS) \
+    $(LOG_LIBS) \
+    $(UI_LIBS) \
+    $(HARDWARE_LIBS)
 
-LOCAL_MODULE:= hwcCommit
-LOCAL_MODULE_TAGS := tests
-LOCAL_CFLAGS := -DGL_GLEXT_PROTOTYPES -DEGL_EGLEXT_PROTOTYPES -Wall -Wextra -Werror
-LOCAL_CXX_STL := libc++
-LOCAL_SRC_FILES:= hwcCommit.cpp
+%canon_reldir%_hwcColorEquiv_LDADD += \
+    $(TESTUTIL_LIBS) \
+    opengl/tests/lib/libglTest.a \
+    %reldir%/libhwcTest.a \
+    $(GTEST_LIBS)
 
-LOCAL_SHARED_LIBRARIES := \
-    libcutils \
-    libEGL \
-    libGLESv2 \
-    libutils \
-    liblog \
-    libui \
-    libhardware \
+%canon_reldir%_hwcColorEquiv_DEPENDENCIES = \
+    $(GTEST_LIBS)
 
-LOCAL_STATIC_LIBRARIES := \
-    libtestUtil \
-    libglTest \
-    libhwcTest \
+%canon_reldir%_hwcColorEquiv_CPPFLAGS += \
+    $(TESTUTIL_CFLAGS) \
+    -I$(srcdir)/opengl/tests/include
 
-LOCAL_C_INCLUDES += \
-    system/extras/tests/include \
-    hardware/libhardware/include \
-    $(call include-path-for, opengl-tests-includes) \
+check_PROGRAMS += \
+    %reldir%/hwcCommit
+if HAVE_DEV_BINDER
+TESTS += \
+    %reldir%/hwcCommit
+endif
 
-include $(BUILD_NATIVE_TEST)
+%canon_reldir%_hwcCommit_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(EGL_CFLAGS) \
+    $(GLESV2_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    $(LOG_CFLAGS) \
+    $(UI_CFLAGS) \
+    $(HARDWARE_CFLAGS) \
+    -DGL_GLEXT_PROTOTYPES \
+    -DEGL_EGLEXT_PROTOTYPES \
+    -DANDROID_EGL_PLATFORM \
+    $(GTEST_CPPFLAGS)
+
+%canon_reldir%_hwcCommit_SOURCES = \
+    %reldir%/hwcCommit.cpp
+
+%canon_reldir%_hwcCommit_LDADD = \
+    $(CUTILS_LIBS) \
+    $(EGL_LIBS) \
+    $(GLESV2_LIBS) \
+    $(UTILS_LIBS) \
+    $(LOG_LIBS) \
+    $(UI_LIBS) \
+    $(HARDWARE_LIBS)
+
+%canon_reldir%_hwcCommit_LDADD += \
+    $(TESTUTIL_LIBS) \
+    opengl/tests/lib/libglTest.a \
+    %reldir%/libhwcTest.a \
+    $(GTEST_LIBS)
+
+%canon_reldir%_hwcCommit_DEPENDENCIES = \
+    $(GTEST_LIBS)
+
+%canon_reldir%_hwcCommit_CPPFLAGS += \
+    $(TESTUTIL_CFLAGS) \
+    -I$(srcdir)/opengl/tests/include
+
+endif # HAVE_GTEST

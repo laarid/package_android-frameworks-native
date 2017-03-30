@@ -1,27 +1,41 @@
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
+opengl_tests_bin_PROGRAMS += \
+    %reldir%/test-opengl-gl2_perf
 
-LOCAL_SRC_FILES:= \
-	gl2_perf.cpp \
-	filltest.cpp
+%canon_reldir%_test_opengl_gl2_perf_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(LOG_CFLAGS) \
+    $(EGL_CFLAGS) \
+    $(GLESV2_CFLAGS) \
+    $(UI_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    -DANDROID_EGL_PLATFORM
 
-LOCAL_SHARED_LIBRARIES := \
-    libcutils \
-    liblog \
-    libEGL \
-    libGLESv2 \
-    libui \
-    libgui \
-    libutils
+%canon_reldir%_test_opengl_gl2_perf_SOURCES = \
+    %reldir%/gl2_perf.cpp \
+    %reldir%/filltest.cpp
 
-LOCAL_STATIC_LIBRARIES += libglTest
+# extra files that are included directly
+EXTRA_DIST += \
+    %reldir%/fill_common.cpp \
+    %reldir%/fragment_shaders.cpp
 
-LOCAL_C_INCLUDES += $(call include-path-for, opengl-tests-includes)
+%canon_reldir%_test_opengl_gl2_perf_CXXFLAGS = \
+    $(AM_CXXFLAGS) \
+    -Wno-unused-variable \
+    -Wno-unused-function
 
-LOCAL_MODULE:= test-opengl-gl2_perf
+%canon_reldir%_test_opengl_gl2_perf_LDADD = \
+    $(LOG_LIBS) \
+    $(EGL_LIBS) \
+    $(GLESV2_LIBS) \
+    $(UI_LIBS) \
+    libs/gui/libandroid-gui.la \
+    $(UTILS_LIBS)
 
-LOCAL_MODULE_TAGS := optional
+%canon_reldir%_test_opengl_gl2_perf_LDADD += \
+    opengl/tests/lib/libglTest.a
 
-LOCAL_CFLAGS := -DGL_GLEXT_PROTOTYPES
-
-include $(BUILD_EXECUTABLE)
+%canon_reldir%_test_opengl_gl2_perf_CPPFLAGS += \
+    -I$(srcdir)/opengl/tests/include \
+    -DGL_GLEXT_PROTOTYPES

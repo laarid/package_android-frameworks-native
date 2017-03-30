@@ -98,6 +98,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include <values.h> // for FLT_MAX, BITSPERBYTE
+
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include <GLES2/gl2.h>
@@ -156,8 +158,10 @@ bool eFlag, sFlag, pFlag;
 
 #define MAXSTR               100
 #define MAXCMD               200
+#if !defined(BITSPERBYTE)
 #define BITSPERBYTE            8 // TODO: Obtain from <values.h>, once
                                  // it has been added
+#endif
 
 #define CMD_STOP_FRAMEWORK   "stop 2>&1"
 #define CMD_START_FRAMEWORK  "start 2>&1"

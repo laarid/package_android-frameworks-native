@@ -1,26 +1,36 @@
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
+opengl_tests_bin_PROGRAMS += \
+    %reldir%/test-opengl-gl2_yuvtex
 
-LOCAL_SRC_FILES:= \
-	gl2_yuvtex.cpp
+%canon_reldir%_test_opengl_gl2_yuvtex_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(EGL_CFLAGS) \
+    $(GLESV2_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    $(UI_CFLAGS) \
+    -DANDROID_EGL_PLATFORM
 
-LOCAL_SHARED_LIBRARIES := \
-    libcutils \
-    libEGL \
-    libGLESv2 \
-    libutils \
-    libui \
-    libgui \
-    libutils
+%canon_reldir%_test_opengl_gl2_yuvtex_SOURCES = \
+    %reldir%/gl2_yuvtex.cpp
 
-LOCAL_STATIC_LIBRARIES += libglTest
+%canon_reldir%_test_opengl_gl2_yuvtex_CXXFLAGS = \
+    $(AM_CXXFLAGS) \
+    -Wno-unused-variable
 
-LOCAL_C_INCLUDES += $(call include-path-for, opengl-tests-includes)
+%canon_reldir%_test_opengl_gl2_yuvtex_LDADD = \
+    $(EGL_LIBS) \
+    opengl/libs/EGL/libandroid-EGL.la \
+    $(GLESV2_LIBS) \
+    opengl/libs/GLES2/libandroid-GLESv2.la \
+    $(UTILS_LIBS) \
+    $(UI_LIBS) \
+    libs/gui/libandroid-gui.la \
+    $(UTILS_LIBS)
 
-LOCAL_MODULE:= test-opengl-gl2_yuvtex
+%canon_reldir%_test_opengl_gl2_yuvtex_LDADD += \
+    opengl/tests/lib/libglTest.a
 
-LOCAL_MODULE_TAGS := optional
-
-LOCAL_CFLAGS := -DGL_GLEXT_PROTOTYPES -DEGL_EGLEXT_PROTOTYPES
-
-include $(BUILD_EXECUTABLE)
+%canon_reldir%_test_opengl_gl2_yuvtex_CPPFLAGS += \
+    -I$(srcdir)/opengl/tests/include \
+    -DGL_GLEXT_PROTOTYPES \
+    -DEGL_EGLEXT_PROTOTYPES

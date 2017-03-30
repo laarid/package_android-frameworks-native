@@ -1,44 +1,40 @@
-dirs := \
-	angeles \
-	configdump \
-	EGLTest \
-	fillrate \
-	filter \
-	finish \
-	gl2_basic \
-	gl2_copyTexImage \
-	gl2_yuvtex \
-	gl_basic \
-	gl_perf \
-	gl_yuvtex \
-	gralloc \
-	hwc \
-	include \
-	lib \
-	linetex \
-	swapinterval \
-	textures \
-	tritex \
+opengl_tests_bindir = $(libdir)/android/frameworks-native-$(LAARID_API_VERSION)/installed-tests/opengl
+opengl_tests_bin_PROGRAMS =
 
-ifneq (,$(TARGET_BUILD_JAVA_SUPPORT_LEVEL))
-dirs += \
-	gl2_cameraeye \
-	gl2_java \
-	gl2_jni \
-	gldual \
-	gl_jni \
-	gl_perfapp \
-	lighting1709 \
-	testLatency \
-	testPauseResume \
-	testViewport \
+include %reldir%/lib/Android.mk
 
-endif # JAVA_SUPPORT
+include %reldir%/angeles/Android.mk
+include %reldir%/configdump/Android.mk
+include %reldir%/EGLTest/Android.mk
+include %reldir%/fillrate/Android.mk
+include %reldir%/filter/Android.mk
+include %reldir%/finish/Android.mk
+include %reldir%/gl2_basic/Android.mk
+include %reldir%/gl2_copyTexImage/Android.mk
+include %reldir%/gl2_yuvtex/Android.mk
+include %reldir%/gl_basic/Android.mk
+include %reldir%/gl_perf/Android.mk
+include %reldir%/gl_yuvtex/Android.mk
+include %reldir%/gralloc/Android.mk
+include %reldir%/hwc/Android.mk
+include %reldir%/linetex/Android.mk
+include %reldir%/swapinterval/Android.mk
+include %reldir%/textures/Android.mk
+include %reldir%/tritex/Android.mk
 
-ifeq (platform,$(TARGET_BUILD_JAVA_SUPPORT_LEVEL))
-dirs += \
-	testFramerate
+#ifneq (,$(TARGET_BUILD_JAVA_SUPPORT_LEVEL))
+#include %reldir%/gl2_cameraeye/Android.mk
+#include %reldir%/gl2_java/Android.mk
+#include %reldir%/gl2_jni/Android.mk
+#include %reldir%/gldual/Android.mk
+#include %reldir%/gl_jni/Android.mk
+#include %reldir%/gl_perfapp/Android.mk
+#include %reldir%/lighting1709/Android.mk
+#include %reldir%/testLatency/Android.mk
+#include %reldir%/testPauseResume/Android.mk
+#include %reldir%/testViewport/Android.mk
+#endif # JAVA_SUPPORT
 
-endif # JAVA_SUPPORT platform
-
-include $(call all-named-subdir-makefiles, $(dirs))
+#ifeq (platform,$(TARGET_BUILD_JAVA_SUPPORT_LEVEL))
+#include %reldir%/testFramerate/Android.mk
+#endif # JAVA_SUPPORT platform

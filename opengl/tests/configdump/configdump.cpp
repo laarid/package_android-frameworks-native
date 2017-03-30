@@ -76,7 +76,7 @@ int main(int argc, char** argv)
 
     for (EGLint i=0 ; i<n ; i++) {
         printf("EGLConfig[%d]\n", i);
-        for (int attr = 0 ; attr<sizeof(attributes)/sizeof(Attribute) ; attr++) {
+        for (size_t attr = 0 ; attr<sizeof(attributes)/sizeof(Attribute) ; attr++) {
             EGLint value;
             eglGetConfigAttrib(dpy, configs[i], attributes[attr].attribute, &value);
             printf("\t%-32s: %10d (0x%08x)\n", attributes[attr].name, value, value);

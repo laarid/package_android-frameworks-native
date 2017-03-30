@@ -1,23 +1,31 @@
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
+opengl_tests_bin_PROGRAMS += \
+    %reldir%/test-opengl-gl_basic
 
-LOCAL_SRC_FILES:= \
-	gl_basic.cpp
+%canon_reldir%_test_opengl_gl_basic_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(EGL_CFLAGS) \
+    $(GLESV1_CM_CFLAGS) \
+    $(UI_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    -DANDROID_EGL_PLATFORM
 
-LOCAL_SHARED_LIBRARIES := \
-	libcutils \
-    libEGL \
-    libGLESv1_CM \
-    libui \
-    libgui \
-    libutils
+%canon_reldir%_test_opengl_gl_basic_SOURCES = \
+    %reldir%/gl_basic.cpp
 
-LOCAL_STATIC_LIBRARIES += libglTest
+%canon_reldir%_test_opengl_gl_basic_CXXFLAGS = \
+    $(AM_CXXFLAGS) \
+    -Wno-unused-variable
 
-LOCAL_C_INCLUDES += $(call include-path-for, opengl-tests-includes)
+%canon_reldir%_test_opengl_gl_basic_LDADD = \
+    $(EGL_LIBS) \
+    $(GLESV1_CM_LIBS) \
+    $(UI_LIBS) \
+    libs/gui/libandroid-gui.la \
+    $(UTILS_LIBS)
 
-LOCAL_MODULE:= test-opengl-gl_basic
+%canon_reldir%_test_opengl_gl_basic_LDADD += \
+    opengl/tests/lib/libglTest.a
 
-LOCAL_MODULE_TAGS := optional
-
-include $(BUILD_EXECUTABLE)
+%canon_reldir%_test_opengl_gl_basic_CPPFLAGS += \
+    -I$(srcdir)/opengl/tests/include

@@ -1,25 +1,33 @@
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
+opengl_tests_bin_PROGRAMS += \
+    %reldir%/test-opengl-finish
 
-LOCAL_SRC_FILES:= \
-	finish.cpp
+%canon_reldir%_test_opengl_finish_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    $(EGL_CFLAGS) \
+    $(GLESV1_CM_CFLAGS) \
+    $(UI_CFLAGS) \
+    -DANDROID_EGL_PLATFORM
 
-LOCAL_SHARED_LIBRARIES := \
-	libcutils \
-	libutils \
-    libEGL \
-    libGLESv1_CM \
-    libui \
-    libgui
+%canon_reldir%_test_opengl_finish_SOURCES = \
+    %reldir%/finish.cpp
 
-LOCAL_STATIC_LIBRARIES += libglTest
+%canon_reldir%_test_opengl_finish_CXXFLAGS = \
+    $(AM_CXXFLAGS) \
+    -Wno-unused-variable
 
-LOCAL_C_INCLUDES += $(call include-path-for, opengl-tests-includes)
+%canon_reldir%_test_opengl_finish_LDADD = \
+    $(UTILS_LIBS) \
+    $(EGL_LIBS) \
+    $(GLESV1_CM_LIBS) \
+    opengl/libs/GLES_CM/libandroid-GLESv1_CM.la \
+    $(UI_LIBS) \
+    libs/gui/libandroid-gui.la
 
-LOCAL_MODULE:= test-opengl-finish
+%canon_reldir%_test_opengl_finish_LDADD += \
+    opengl/tests/lib/libglTest.a
 
-LOCAL_MODULE_TAGS := optional
-
-LOCAL_CFLAGS := -DGL_GLEXT_PROTOTYPES
-
-include $(BUILD_EXECUTABLE)
+%canon_reldir%_test_opengl_finish_CPPFLAGS += \
+    -I$(srcdir)/opengl/tests/include \
+    -DGL_GLEXT_PROTOTYPES

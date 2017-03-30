@@ -1,23 +1,27 @@
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
+opengl_tests_bin_PROGRAMS += \
+    %reldir%/test-opengl-swapinterval
 
-LOCAL_SRC_FILES:= \
-	swapinterval.cpp
+%canon_reldir%_test_opengl_swapinterval_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    $(EGL_CFLAGS) \
+    $(GLESV1_CM_CFLAGS) \
+    $(UI_CFLAGS) \
+    -DANDROID_EGL_PLATFORM
 
-LOCAL_SHARED_LIBRARIES := \
-	libcutils \
-	libutils \
-    libEGL \
-    libGLESv1_CM \
-    libui \
-    libgui
+%canon_reldir%_test_opengl_swapinterval_SOURCES = \
+    %reldir%/swapinterval.cpp
 
-LOCAL_STATIC_LIBRARIES += libglTest
+%canon_reldir%_test_opengl_swapinterval_LDADD = \
+    $(UTILS_LIBS) \
+    $(EGL_LIBS) \
+    $(GLESV1_CM_LIBS) \
+    $(UI_LIBS) \
+    libs/gui/libandroid-gui.la
 
-LOCAL_C_INCLUDES += $(call include-path-for, opengl-tests-includes)
+%canon_reldir%_test_opengl_swapinterval_LDADD += \
+    opengl/tests/lib/libglTest.a
 
-LOCAL_MODULE:= test-opengl-swapinterval
-
-LOCAL_MODULE_TAGS := optional
-
-include $(BUILD_EXECUTABLE)
+%canon_reldir%_test_opengl_swapinterval_CPPFLAGS += \
+    -I$(srcdir)/opengl/tests/include

@@ -19,6 +19,7 @@ Build-Depends:
  libandroid-nativehelper0-dev (>= 0.0.4),
  libandroid-powermanager0-dev <pkg.android-frameworks-native.stage2>,
  libandroid-sync0-dev (>= 0.0.20),
+ libandroid-testutil0-dev <pkg.android-frameworks-native.stage2>,
  libandroid-ui0-dev <pkg.android-frameworks-native.stage2>,
  libandroid-uidmap0-dev (>= 0.0.20),
  libandroid-utils0-dev (>= 0.0.20),
@@ -63,6 +64,19 @@ Depends:
 Description: Android native framework headers
  This package contains headers from Android platform/frameworks/native that are
  not belong to any local module.
+
+Package: android-opengl-tests
+Build-Profiles: <pkg.android-frameworks-native.stage2>
+Priority: extra
+Section: libdevel
+Architecture: any
+Multi-Arch: no
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Android native frameworks - OpenGL test utilities
+ This package contains OpenGL test utilities built from Android
+ platform/frameworks/native.
 
 Package: android-sensorservice
 Build-Profiles: <pkg.android-frameworks-native.stage2>

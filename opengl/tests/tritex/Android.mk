@@ -1,23 +1,31 @@
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
+opengl_tests_bin_PROGRAMS += \
+    %reldir%/test-opengl-tritex
 
-LOCAL_SRC_FILES:= \
-	tritex.cpp
+%canon_reldir%_test_opengl_tritex_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(EGL_CFLAGS) \
+    $(GLESV1_CM_CFLAGS) \
+    $(UI_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    -DANDROID_EGL_PLATFORM
 
-LOCAL_SHARED_LIBRARIES := \
-	libcutils \
-    libEGL \
-    libGLESv1_CM \
-    libui \
-    libgui \
-    libutils
+%canon_reldir%_test_opengl_tritex_SOURCES = \
+    %reldir%/tritex.cpp
 
-LOCAL_STATIC_LIBRARIES += libglTest
+%canon_reldir%_test_opengl_tritex_CXXFLAGS = \
+    $(AM_CXXFLAGS) \
+    -Wno-unused-variable
 
-LOCAL_C_INCLUDES += $(call include-path-for, opengl-tests-includes)
+%canon_reldir%_test_opengl_tritex_LDADD = \
+    $(EGL_LIBS) \
+    $(GLESV1_CM_LIBS) \
+    $(UI_LIBS) \
+    libs/gui/libandroid-gui.la \
+    $(UTILS_LIBS)
 
-LOCAL_MODULE:= test-opengl-tritex
+%canon_reldir%_test_opengl_tritex_LDADD += \
+    opengl/tests/lib/libglTest.a
 
-LOCAL_MODULE_TAGS := optional
-
-include $(BUILD_EXECUTABLE)
+%canon_reldir%_test_opengl_tritex_CPPFLAGS += \
+    -I$(srcdir)/opengl/tests/include

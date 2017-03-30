@@ -1,38 +1,48 @@
 # Build the unit tests.
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
-LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
+if HAVE_GTEST
 
-LOCAL_MODULE := EGL_test
+check_PROGRAMS += \
+    %reldir%/EGL_test
+if HAVE_DEV_BINDER
+TESTS += \
+    %reldir%/EGL_test
+endif
 
-LOCAL_MODULE_TAGS := tests
+%canon_reldir%_EGL_test_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(EGL_CFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(BINDER_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    $(HARDWARE_CFLAGS) \
+    -DANDROID_EGL_PLATFORM \
+    $(GTEST_CPPFLAGS)
 
-LOCAL_SRC_FILES := \
-    egl_cache_test.cpp \
-    EGL_test.cpp \
+%canon_reldir%_EGL_test_SOURCES = \
+    %reldir%/EGL_test.cpp
 
-LOCAL_SHARED_LIBRARIES := \
-	libEGL \
-	libcutils \
-	libbinder \
-	libutils \
-	libgui \
+# This depends on Android specific egl_cache_t
+#%canon_reldir%_EGL_test_SOURCES += \
+#    %reldir%/egl_cache_test.cpp
 
-LOCAL_C_INCLUDES := \
-    bionic/libc/private \
-    frameworks/native/opengl/libs \
-    frameworks/native/opengl/libs/EGL \
+%canon_reldir%_EGL_test_CXXFLAGS = \
+    $(AM_CXXFLAGS) \
+    -Wno-sign-compare
+
+%canon_reldir%_EGL_test_LDADD = \
+    $(EGL_LIBS) \
+    $(CUTILS_LIBS) \
+    $(BINDER_LIBS) \
+    $(UTILS_LIBS) \
+    libs/gui/libandroid-gui.la \
+    $(GTEST_LIBS)
+
+%canon_reldir%_EGL_test_DEPENDENCIES = \
+    $(GTEST_LIBS)
 
 # gold in binutils 2.22 will warn about the usage of mktemp
-LOCAL_LDFLAGS += -Wl,--no-fatal-warnings
+%canon_reldir%_EGL_test_LDFLAGS = \
+    $(AM_LDFLAGS) \
+    -Wl,--no-fatal-warnings
 
-include $(BUILD_NATIVE_TEST)
-
-# Include subdirectory makefiles
-# ============================================================
-
-# If we're building with ONE_SHOT_MAKEFILE (mm, mmm), then what the framework
-# team really wants is to build the stuff defined by this makefile.
-ifeq (,$(ONE_SHOT_MAKEFILE))
-include $(call first-makefiles-under,$(LOCAL_PATH))
-endif
+endif # HAVE_GTEST

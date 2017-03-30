@@ -1,16 +1,16 @@
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
+opengl_tests_bin_PROGRAMS += \
+    %reldir%/test-opengl-configdump
 
-LOCAL_SRC_FILES:= \
-	configdump.cpp
+%canon_reldir%_test_opengl_configdump_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(EGL_CFLAGS) \
+    $(GLESV1_CM_CFLAGS) \
+    -DANDROID_EGL_PLATFORM
 
-LOCAL_SHARED_LIBRARIES := \
-	libcutils \
-    libEGL \
-    libGLESv1_CM
+%canon_reldir%_test_opengl_configdump_SOURCES = \
+    %reldir%/configdump.cpp
 
-LOCAL_MODULE:= test-opengl-configdump
-
-LOCAL_MODULE_TAGS := optional
-
-include $(BUILD_EXECUTABLE)
+%canon_reldir%_test_opengl_configdump_LDADD = \
+    $(EGL_LIBS) \
+    $(GLESV1_CM_LIBS)

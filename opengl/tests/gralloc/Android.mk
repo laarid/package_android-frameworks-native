@@ -1,16 +1,15 @@
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
+opengl_tests_bin_PROGRAMS += \
+    %reldir%/test-opengl-gralloc
 
-LOCAL_SRC_FILES:= \
-    gralloc.cpp
+%canon_reldir%_test_opengl_gralloc_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    $(UI_CFLAGS)
 
-LOCAL_SHARED_LIBRARIES := \
-    libcutils \
-    libutils \
-    libui
+%canon_reldir%_test_opengl_gralloc_SOURCES = \
+    %reldir%/gralloc.cpp
 
-LOCAL_MODULE:= test-opengl-gralloc
-
-LOCAL_MODULE_TAGS := optional
-
-include $(BUILD_EXECUTABLE)
+%canon_reldir%_test_opengl_gralloc_LDADD = \
+    $(UTILS_LIBS) \
+    $(UI_LIBS)

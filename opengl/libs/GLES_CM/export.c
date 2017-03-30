@@ -76,4 +76,16 @@ glGenFramebuffersOES (GLsizei n, GLuint* framebuffers)
     pfn(n, framebuffers);
 }
 
+void GL_APIENTRY
+glDrawTexiOES (GLint x, GLint y, GLint z, GLint width, GLint height)
+{
+    static PFNGLDRAWTEXIOESPROC pfn = NULL;
+
+    if (!pfn)
+        pfn = (PFNGLDRAWTEXIOESPROC) eglGetProcAddress("glDrawTexiOES");
+
+    // MESA has glDrawTexiOES but not exported.
+    pfn(x, y, z, width, height);
+}
+
 #endif // !__ANDROID__

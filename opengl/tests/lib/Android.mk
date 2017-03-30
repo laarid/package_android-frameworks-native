@@ -12,16 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOCAL_PATH:= $(call my-dir)
+noinst_LIBRARIES += \
+    %reldir%/libglTest.a
 
-include $(CLEAR_VARS)
-LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
-LOCAL_MODULE_TAGS := tests
-LOCAL_MODULE:= libglTest
-LOCAL_SRC_FILES:= glTestLib.cpp WindowSurface.cpp
-LOCAL_C_INCLUDES += system/extras/tests/include \
-	$(call include-path-for, opengl-tests-includes)
+%canon_reldir%_libglTest_a_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    $(HARDWARE_CFLAGS) \
+    -DANDROID_EGL_PLATFORM
 
-LOCAL_CFLAGS := -DGL_GLEXT_PROTOTYPES -DEGL_EGLEXT_PROTOTYPES -Wall -Wextra -Werror
+%canon_reldir%_libglTest_a_SOURCES = \
+    opengl/tests/include/EGLUtils.h \
+    opengl/tests/include/glTestLib.h \
+    opengl/tests/include/WindowSurface.h \
+    %reldir%/glTestLib.cpp \
+    %reldir%/WindowSurface.cpp
 
-include $(BUILD_STATIC_LIBRARY)
+%canon_reldir%_libglTest_a_CPPFLAGS += \
+    $(TESTUTIL_CFLAGS) \
+    -I$(srcdir)/opengl/tests/include
