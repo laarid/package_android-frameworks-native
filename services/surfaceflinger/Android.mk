@@ -1,197 +1,261 @@
-LOCAL_PATH := $(call my-dir)
-include $(CLEAR_VARS)
+lib_LTLIBRARIES += \
+    %reldir%/libandroid-surfaceflinger.la
 
-LOCAL_CLANG := true
+%canon_reldir%_libandroid_surfaceflinger_la_SOURCES = \
+    %reldir%/Barrier.h \
+    %reldir%/Client.cpp \
+    %reldir%/Client.h \
+    %reldir%/Colorizer.h \
+    %reldir%/DdmConnection.h \
+    %reldir%/DisplayDevice.cpp \
+    %reldir%/DisplayDevice.h \
+    %reldir%/DispSync.cpp \
+    %reldir%/DispSync.h \
+    %reldir%/EventControlThread.cpp \
+    %reldir%/EventControlThread.h \
+    %reldir%/EventThread.cpp \
+    %reldir%/EventThread.h \
+    %reldir%/FenceTracker.cpp \
+    %reldir%/FenceTracker.h \
+    %reldir%/FrameTracker.cpp \
+    %reldir%/FrameTracker.h \
+    %reldir%/GpuService.cpp \
+    %reldir%/GpuService.h \
+    %reldir%/Layer.cpp \
+    %reldir%/Layer.h \
+    %reldir%/LayerDim.cpp \
+    %reldir%/LayerDim.h \
+    %reldir%/MessageQueue.cpp \
+    %reldir%/MessageQueue.h \
+    %reldir%/MonitoredProducer.cpp \
+    %reldir%/MonitoredProducer.h \
+    %reldir%/SurfaceFlinger.h \
+    %reldir%/SurfaceFlingerConsumer.cpp \
+    %reldir%/SurfaceFlingerConsumer.h \
+    %reldir%/Transform.cpp \
+    %reldir%/Transform.h \
+    %reldir%/DisplayHardware/DisplaySurface.h \
+    %reldir%/DisplayHardware/FloatRect.h \
+    %reldir%/DisplayHardware/FramebufferSurface.cpp \
+    %reldir%/DisplayHardware/FramebufferSurface.h \
+    %reldir%/DisplayHardware/HWC2.cpp \
+    %reldir%/DisplayHardware/HWC2.h \
+    %reldir%/DisplayHardware/HWC2On1Adapter.cpp \
+    %reldir%/DisplayHardware/HWC2On1Adapter.h \
+    %reldir%/DisplayHardware/HWComposer.h \
+    %reldir%/DisplayHardware/PowerHAL.cpp \
+    %reldir%/DisplayHardware/PowerHAL.h \
+    %reldir%/DisplayHardware/VirtualDisplaySurface.cpp \
+    %reldir%/DisplayHardware/VirtualDisplaySurface.h \
+    %reldir%/Effects/Daltonizer.cpp \
+    %reldir%/Effects/Daltonizer.h \
+    %reldir%/EventLog/EventLog.cpp \
+    %reldir%/EventLog/EventLog.h \
+    %reldir%/RenderEngine/Description.cpp \
+    %reldir%/RenderEngine/Description.h \
+    %reldir%/RenderEngine/GLES10RenderEngine.cpp \
+    %reldir%/RenderEngine/GLES10RenderEngine.h \
+    %reldir%/RenderEngine/GLES11RenderEngine.cpp \
+    %reldir%/RenderEngine/GLES11RenderEngine.h \
+    %reldir%/RenderEngine/GLES20RenderEngine.cpp \
+    %reldir%/RenderEngine/GLES20RenderEngine.h \
+    %reldir%/RenderEngine/GLExtensions.cpp \
+    %reldir%/RenderEngine/GLExtensions.h \
+    %reldir%/RenderEngine/Mesh.cpp \
+    %reldir%/RenderEngine/Mesh.h \
+    %reldir%/RenderEngine/Program.cpp \
+    %reldir%/RenderEngine/Program.h \
+    %reldir%/RenderEngine/ProgramCache.cpp \
+    %reldir%/RenderEngine/ProgramCache.h \
+    %reldir%/RenderEngine/RenderEngine.cpp \
+    %reldir%/RenderEngine/RenderEngine.h \
+    %reldir%/RenderEngine/Texture.cpp \
+    %reldir%/RenderEngine/Texture.h \
+    %reldir%/clz.h
 
-LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
-LOCAL_SRC_FILES := \
-    Client.cpp \
-    DisplayDevice.cpp \
-    DispSync.cpp \
-    EventControlThread.cpp \
-    EventThread.cpp \
-    FenceTracker.cpp \
-    FrameTracker.cpp \
-    GpuService.cpp \
-    Layer.cpp \
-    LayerDim.cpp \
-    MessageQueue.cpp \
-    MonitoredProducer.cpp \
-    SurfaceFlingerConsumer.cpp \
-    Transform.cpp \
-    DisplayHardware/FramebufferSurface.cpp \
-    DisplayHardware/HWC2.cpp \
-    DisplayHardware/HWC2On1Adapter.cpp \
-    DisplayHardware/PowerHAL.cpp \
-    DisplayHardware/VirtualDisplaySurface.cpp \
-    Effects/Daltonizer.cpp \
-    EventLog/EventLogTags.logtags \
-    EventLog/EventLog.cpp \
-    RenderEngine/Description.cpp \
-    RenderEngine/Mesh.cpp \
-    RenderEngine/Program.cpp \
-    RenderEngine/ProgramCache.cpp \
-    RenderEngine/GLExtensions.cpp \
-    RenderEngine/RenderEngine.cpp \
-    RenderEngine/Texture.cpp \
-    RenderEngine/GLES10RenderEngine.cpp \
-    RenderEngine/GLES11RenderEngine.cpp \
-    RenderEngine/GLES20RenderEngine.cpp
+#%canon_reldir%_libandroid_surfaceflinger_la_SOURCES += \
+#    %reldir%/EventLog/EventLogTags.logtags
 
-LOCAL_C_INCLUDES := \
-	frameworks/native/vulkan/include \
-	external/vulkan-validation-layers/libs/vkjson
+%canon_reldir%_libandroid_surfaceflinger_la_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(UIDMAP_CFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(HARDWARE_CFLAGS) \
+    $(NATIVEHELPER_CFLAGS) \
+    $(POWERMANAGER_CFLAGS) \
+    $(BINDER_CFLAGS) \
+    $(UI_CFLAGS) \
+    $(EGL_CFLAGS) \
+    -I$(top_srcdir)/%reldir% \
+    -DANDROID_EGL_PLATFORM
 
-LOCAL_CFLAGS := -DLOG_TAG=\"SurfaceFlinger\"
-LOCAL_CFLAGS += -DGL_GLEXT_PROTOTYPES -DEGL_EGLEXT_PROTOTYPES
-#LOCAL_CFLAGS += -DENABLE_FENCE_TRACKING
+#LOCAL_C_INCLUDES := \
+#	frameworks/native/vulkan/include \
+#	external/vulkan-validation-layers/libs/vkjson
 
-USE_HWC2 := false
-ifeq ($(USE_HWC2),true)
-    LOCAL_CFLAGS += -DUSE_HWC2
-    LOCAL_SRC_FILES += \
-        SurfaceFlinger.cpp \
-        DisplayHardware/HWComposer.cpp
+%canon_reldir%_libandroid_surfaceflinger_la_CPPFLAGS += \
+    -DLOG_TAG=\"SurfaceFlinger\" \
+    -DGL_GLEXT_PROTOTYPES -DEGL_EGLEXT_PROTOTYPES
+
+#%canon_reldir%_libandroid_surfaceflinger_la_CPPFLAGS += \
+#    -DENABLE_FENCE_TRACKING
+
+if USE_HWC2
+%canon_reldir%_libandroid_surfaceflinger_la_CPPFLAGS += \
+    -DUSE_HWC2
+%canon_reldir%_libandroid_surfaceflinger_la_SOURCES += \
+    %reldir%/SurfaceFlinger.cpp \
+    %reldir%/DisplayHardware/HWComposer.cpp
 else
-    LOCAL_SRC_FILES += \
-        SurfaceFlinger_hwc1.cpp \
-        DisplayHardware/HWComposer_hwc1.cpp
+%canon_reldir%_libandroid_surfaceflinger_la_SOURCES += \
+    %reldir%/DisplayHardware/HWComposer_hwc1.cpp \
+    %reldir%/DisplayHardware/HWComposer_hwc1.h \
+    %reldir%/SurfaceFlinger_hwc1.cpp
 endif
 
-ifeq ($(TARGET_BOARD_PLATFORM),omap4)
-    LOCAL_CFLAGS += -DHAS_CONTEXT_PRIORITY
-endif
-ifeq ($(TARGET_BOARD_PLATFORM),s5pc110)
-    LOCAL_CFLAGS += -DHAS_CONTEXT_PRIORITY
+if ENABLE_SF_CONTEXT_PRIORITY
+%canon_reldir%_libandroid_surfaceflinger_la_CPPFLAGS += \
+    -DHAS_CONTEXT_PRIORITY
 endif
 
-ifeq ($(TARGET_DISABLE_TRIPLE_BUFFERING),true)
-    LOCAL_CFLAGS += -DTARGET_DISABLE_TRIPLE_BUFFERING
+if DISABLE_SF_TRIPLE_BUFFERING
+%canon_reldir%_libandroid_surfaceflinger_la_CPPFLAGS += \
+    -DTARGET_DISABLE_TRIPLE_BUFFERING
 endif
 
-ifeq ($(TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS),true)
-    LOCAL_CFLAGS += -DFORCE_HWC_COPY_FOR_VIRTUAL_DISPLAYS
+if ENABLE_FORCE_HWC_COPY_FOR_VIRTUAL_DISPLAYS
+%canon_reldir%_libandroid_surfaceflinger_la_CPPFLAGS += \
+    -DFORCE_HWC_COPY_FOR_VIRTUAL_DISPLAYS
 endif
 
-ifneq ($(NUM_FRAMEBUFFER_SURFACE_BUFFERS),)
-    LOCAL_CFLAGS += -DNUM_FRAMEBUFFER_SURFACE_BUFFERS=$(NUM_FRAMEBUFFER_SURFACE_BUFFERS)
+if USE_NUM_FRAMEBUFFER_SURFACE_BUFFERS
+%canon_reldir%_libandroid_surfaceflinger_la_CPPFLAGS += \
+    -DNUM_FRAMEBUFFER_SURFACE_BUFFERS=$(NUM_FRAMEBUFFER_SURFACE_BUFFERS)
 endif
 
-ifeq ($(TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK),true)
-    LOCAL_CFLAGS += -DRUNNING_WITHOUT_SYNC_FRAMEWORK
+if WITHOUT_SF_SYNC_FRAMEWORK
+%canon_reldir%_libandroid_surfaceflinger_la_CPPFLAGS += \
+    -DRUNNING_WITHOUT_SYNC_FRAMEWORK
 endif
 
 # See build/target/board/generic/BoardConfig.mk for a description of this setting.
-ifneq ($(VSYNC_EVENT_PHASE_OFFSET_NS),)
-    LOCAL_CFLAGS += -DVSYNC_EVENT_PHASE_OFFSET_NS=$(VSYNC_EVENT_PHASE_OFFSET_NS)
-else
-    LOCAL_CFLAGS += -DVSYNC_EVENT_PHASE_OFFSET_NS=0
-endif
+%canon_reldir%_libandroid_surfaceflinger_la_CPPFLAGS += \
+    -DVSYNC_EVENT_PHASE_OFFSET_NS=$(VSYNC_EVENT_PHASE_OFFSET_NS)
 
 # See build/target/board/generic/BoardConfig.mk for a description of this setting.
-ifneq ($(SF_VSYNC_EVENT_PHASE_OFFSET_NS),)
-    LOCAL_CFLAGS += -DSF_VSYNC_EVENT_PHASE_OFFSET_NS=$(SF_VSYNC_EVENT_PHASE_OFFSET_NS)
-else
-    LOCAL_CFLAGS += -DSF_VSYNC_EVENT_PHASE_OFFSET_NS=0
-endif
+%canon_reldir%_libandroid_surfaceflinger_la_CPPFLAGS += \
+    -DSF_VSYNC_EVENT_PHASE_OFFSET_NS=$(SF_VSYNC_EVENT_PHASE_OFFSET_NS)
 
-ifneq ($(PRESENT_TIME_OFFSET_FROM_VSYNC_NS),)
-    LOCAL_CFLAGS += -DPRESENT_TIME_OFFSET_FROM_VSYNC_NS=$(PRESENT_TIME_OFFSET_FROM_VSYNC_NS)
-else
-    LOCAL_CFLAGS += -DPRESENT_TIME_OFFSET_FROM_VSYNC_NS=0
-endif
+%canon_reldir%_libandroid_surfaceflinger_la_CPPFLAGS += \
+    -DPRESENT_TIME_OFFSET_FROM_VSYNC_NS=$(PRESENT_TIME_OFFSET_FROM_VSYNC_NS)
 
-ifneq ($(MAX_VIRTUAL_DISPLAY_DIMENSION),)
-    LOCAL_CFLAGS += -DMAX_VIRTUAL_DISPLAY_DIMENSION=$(MAX_VIRTUAL_DISPLAY_DIMENSION)
-else
-    LOCAL_CFLAGS += -DMAX_VIRTUAL_DISPLAY_DIMENSION=0
-endif
+%canon_reldir%_libandroid_surfaceflinger_la_CPPFLAGS += \
+    -DMAX_VIRTUAL_DISPLAY_DIMENSION=$(MAX_VIRTUAL_DISPLAY_DIMENSION)
 
-LOCAL_CFLAGS += -fvisibility=hidden -Werror=format
-LOCAL_CFLAGS += -std=c++14
+%canon_reldir%_libandroid_surfaceflinger_la_CXXFLAGS = \
+    $(AM_CXXFLAGS) \
+    -fvisibility=hidden \
+    -std=c++14 \
+    -Wno-enum-compare \
+    -Wno-multichar \
+    -Wno-switch
 
-LOCAL_STATIC_LIBRARIES := libvkjson
-LOCAL_SHARED_LIBRARIES := \
-    libcutils \
-    liblog \
-    libdl \
-    libhardware \
-    libutils \
-    libEGL \
-    libGLESv1_CM \
-    libGLESv2 \
-    libbinder \
-    libui \
-    libgui \
-    libpowermanager \
-    libvulkan
+%canon_reldir%_libandroid_surfaceflinger_la_LIBADD = \
+    $(LIBADD_DL) \
+    $(PTHREAD_LIBS) -lpthread \
+    $(ATOMIC_LIBS) \
+    $(RT_LIBS) \
+    $(UIDMAP_LIBS) \
+    $(CUTILS_LIBS) \
+    $(LOG_LIBS) \
+    $(HARDWARE_LIBS) \
+    $(UTILS_LIBS) \
+    $(EGL_LIBS) \
+    opengl/libs/EGL/libandroid-EGL.la \
+    $(GLESV1_CM_LIBS) \
+    opengl/libs/GLES_CM/libandroid-GLESv1_CM.la \
+    $(GLESV2_LIBS) \
+    $(BINDER_LIBS) \
+    $(UI_LIBS) \
+    libs/gui/libandroid-gui.la \
+    $(POWERMANAGER_LIBS) \
+    $(VKJSON_LIBS)
+#%canon_reldir%_libandroid_surfaceflinger_la_LIBADD += \
+#    libvulkan
 
-LOCAL_MODULE := libsurfaceflinger
-
-LOCAL_CFLAGS += -Wall -Werror -Wunused -Wunreachable-code
-
-include $(BUILD_SHARED_LIBRARY)
+%canon_reldir%_libandroid_surfaceflinger_la_LDFLAGS = \
+    $(AM_LDFLAGS) \
+    $(libtool_opts)
 
 ###############################################################
 # build surfaceflinger's executable
-include $(CLEAR_VARS)
 
-LOCAL_CLANG := true
+bin_PROGRAMS += \
+    %reldir%/surfaceflinger
 
-LOCAL_LDFLAGS := -Wl,--version-script,art/sigchainlib/version-script.txt -Wl,--export-dynamic
-LOCAL_CFLAGS := -DLOG_TAG=\"SurfaceFlinger\"
-LOCAL_CPPFLAGS := -std=c++14
+#%canon_reldir%_surfaceflinger_LDFLAGS = \
+#    $(AM_LDFLAGS) \
+#    -Wl,--version-script,art/sigchainlib/version-script.txt \
+#    -Wl,--export-dynamic
+%canon_reldir%_surfaceflinger_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(HARDWARE_CFLAGS) \
+    $(NATIVEHELPER_CFLAGS) \
+    $(BINDER_CFLAGS) \
+    $(UI_CFLAGS) \
+    $(EGL_CFLAGS) \
+    -DLOG_TAG=\"SurfaceFlinger\" \
+    -DANDROID_EGL_PLATFORM
+%canon_reldir%_surfaceflinger_CXXFLAGS = \
+    $(AM_CXXFLAGS) \
+    -std=c++14 \
+    -Wno-multichar
 
-LOCAL_INIT_RC := surfaceflinger.rc
+#LOCAL_INIT_RC := surfaceflinger.rc
 
-ifneq ($(ENABLE_CPUSETS),)
-    LOCAL_CFLAGS += -DENABLE_CPUSETS
+if ENABLE_CPUSETS
+%canon_reldir%_surfaceflinger_CPPFLAGS += \
+    -DENABLE_CPUSETS
 endif
 
-LOCAL_SRC_FILES := \
-    main_surfaceflinger.cpp
+%canon_reldir%_surfaceflinger_SOURCES = \
+    %reldir%/main_surfaceflinger.cpp
 
-LOCAL_SHARED_LIBRARIES := \
-    libsurfaceflinger \
-    libcutils \
-    liblog \
-    libbinder \
-    libutils \
-    libdl
+%canon_reldir%_surfaceflinger_LDADD = \
+    %reldir%/libandroid-surfaceflinger.la \
+    $(CUTILS_LIBS) \
+    $(BINDER_LIBS) \
+    $(UTILS_LIBS)
 
-LOCAL_WHOLE_STATIC_LIBRARIES := libsigchain
+#%canon_reldir%_surfaceflinger_LDADD += \
+#    $(LOG_LIBS)
 
-LOCAL_MODULE := surfaceflinger
-
-ifdef TARGET_32_BIT_SURFACEFLINGER
-LOCAL_32_BIT_ONLY := true
-endif
-
-LOCAL_CFLAGS += -Wall -Werror -Wunused -Wunreachable-code
-
-include $(BUILD_EXECUTABLE)
+#LOCAL_WHOLE_STATIC_LIBRARIES := libsigchain
 
 ###############################################################
-# uses jni which may not be available in PDK
-ifneq ($(wildcard libnativehelper/include),)
-include $(CLEAR_VARS)
 
-LOCAL_CLANG := true
+lib_LTLIBRARIES += \
+    %reldir%/libandroid-surfaceflinger-ddmconnection.la
 
-LOCAL_CFLAGS := -DLOG_TAG=\"SurfaceFlinger\"
-LOCAL_CPPFLAGS := -std=c++14
+%canon_reldir%_libandroid_surfaceflinger_ddmconnection_la_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(BINDER_CFLAGS) \
+    $(NATIVEHELPER_CFLAGS) \
+    -DLOG_TAG=\"SurfaceFlinger\" \
+    -DANDROID_EGL_PLATFORM
+%canon_reldir%_libandroid_surfaceflinger_ddmconnection_la_CXXFLAGS = \
+    $(AM_CXXFLAGS) \
+    -std=c++14
 
-LOCAL_SRC_FILES := \
-    DdmConnection.cpp
+%canon_reldir%_libandroid_surfaceflinger_ddmconnection_la_SOURCES = \
+    %reldir%/DdmConnection.cpp
 
-LOCAL_SHARED_LIBRARIES := \
-    libcutils \
-    liblog \
-    libdl
+%canon_reldir%_libandroid_surfaceflinger_ddmconnection_la_LIBADD = \
+    $(LIBADD_DL) \
+    $(LOG_LIBS)
 
-LOCAL_MODULE := libsurfaceflinger_ddmconnection
-
-LOCAL_CFLAGS += -Wall -Werror -Wunused -Wunreachable-code
-
-include $(BUILD_SHARED_LIBRARY)
-endif # libnativehelper
+%canon_reldir%_libandroid_surfaceflinger_ddmconnection_la_LDFLAGS = \
+    $(AM_LDFLAGS) \
+    $(libtool_opts)

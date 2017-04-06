@@ -5,27 +5,31 @@ Build-Depends:
  debhelper (>= 9),
  dh-autoreconf,
  autoconf-archive,
+ libltdl-dev,
  pkg-config (>= 0.24),
  android-frameworks-native-headers <pkg.android-frameworks-native.stage2>,
- libandroid-backtrace0-dev (>= 0.0.19) [amd64 i386 arm64 armel armhf mips mips64el mipsel ppc64el],
- libandroid-base0-dev (>= 0.0.19),
+ libandroid-backtrace0-dev (>= 0.0.20) [amd64 i386 arm64 armel armhf mips mips64el mipsel ppc64el],
+ libandroid-base0-dev (>= 0.0.20),
  libandroid-binder0-dev <pkg.android-frameworks-native.stage2>,
  libandroid-bionic0-dev (>= 0.1.4),
- libandroid-cutils0-dev (>= 0.0.19),
+ libandroid-cutils0-dev (>= 0.0.20),
  libandroid-hardware0-dev (>= 0.0.1+b1),
  libandroid-hardware-legacy0-dev (>= 0.0.2),
- libandroid-log0-dev (>= 0.0.19),
+ libandroid-log0-dev (>= 0.0.20),
  libandroid-nativehelper0-dev (>= 0.0.4),
- libandroid-sync0-dev (>= 0.0.19),
+ libandroid-powermanager0-dev <pkg.android-frameworks-native.stage2>,
+ libandroid-sync0-dev (>= 0.0.20),
  libandroid-ui0-dev <pkg.android-frameworks-native.stage2>,
- libandroid-uidmap0-dev (>= 0.0.19),
- libandroid-utils0-dev (>= 0.0.19),
+ libandroid-uidmap0-dev (>= 0.0.20),
+ libandroid-utils0-dev (>= 0.0.20),
+ libatomic1 <pkg.android-frameworks-native.stage2>,
  libegl1-mesa-dev <pkg.android-frameworks-native.stage2>,
  libgles1-mesa-dev <pkg.android-frameworks-native.stage2>,
  libgles2-mesa-dev <pkg.android-frameworks-native.stage2>,
  libgtest-dev,
  libselinux1-dev <!pkg.android-frameworks-native.stage2>,
  libssl-dev,
+ libvkjson-dev <pkg.android-frameworks-native.stage2>,
  zlib1g-dev <!pkg.android-frameworks-native.stage2>,
 Standards-Version: 3.9.5
 Section: libs
@@ -52,9 +56,9 @@ Section: misc
 Architecture: any
 Multi-Arch: same
 Depends:
- libandroid-cutils0-dev (>= 0.0.19),
+ libandroid-cutils0-dev (>= 0.0.20),
  libandroid-nativehelper0-dev (>= 0.0.4),
- libandroid-utils0-dev (>= 0.0.19),
+ libandroid-utils0-dev (>= 0.0.20),
  ${misc:Depends},
 Description: Android native framework headers
  This package contains headers from Android platform/frameworks/native that are
@@ -98,7 +102,7 @@ Depends:
  libandroid-batteryservice0 (= ${binary:Version}),
  libandroid-binder0-dev (= ${binary:Version}),
  libandroid-nativehelper0-dev (>= 0.0.4),
- libandroid-utils0-dev (>= 0.0.19),
+ libandroid-utils0-dev (>= 0.0.20),
  ${misc:Depends},
 Description: Android libbatteryservice - development
  This package contains libbatteryservice built from Android
@@ -129,10 +133,10 @@ Multi-Arch: same
 Depends:
  libandroid-binder0 (= ${binary:Version}),
  libandroid-bionic0-dev (>= 0.1.4),
- libandroid-cutils0-dev (>= 0.0.19),
- libandroid-log0-dev (>= 0.0.19),
+ libandroid-cutils0-dev (>= 0.0.20),
+ libandroid-log0-dev (>= 0.0.20),
  libandroid-nativehelper0-dev (>= 0.0.4),
- libandroid-utils0-dev (>= 0.0.19),
+ libandroid-utils0-dev (>= 0.0.20),
  ${misc:Depends},
 Description: Android libbinder - development
  This package contains libbinder built from Android platform/frameworks/native.
@@ -332,9 +336,9 @@ Multi-Arch: same
 Depends:
  libandroid-input0 (= ${binary:Version}),
  libandroid-binder0-dev (= ${binary:Version}),
- libandroid-cutils0-dev (>= 0.0.19),
- libandroid-log0-dev (>= 0.0.19),
- libandroid-utils0-dev (>= 0.0.19),
+ libandroid-cutils0-dev (>= 0.0.20),
+ libandroid-log0-dev (>= 0.0.20),
+ libandroid-utils0-dev (>= 0.0.20),
  ${misc:Depends},
 Description: Android libinput - development
  This package contains libinput built from Android platform/frameworks/native.
@@ -363,10 +367,10 @@ Multi-Arch: same
 Depends:
  libandroid-inputflinger0 (= ${binary:Version}),
  libandroid-binder0-dev (= ${binary:Version}),
- libandroid-cutils0-dev (>= 0.0.19),
+ libandroid-cutils0-dev (>= 0.0.20),
  libandroid-input0-dev (= ${binary:Version}),
  libandroid-ui0-dev (= ${binary:Version}),
- libandroid-utils0-dev (>= 0.0.19),
+ libandroid-utils0-dev (>= 0.0.20),
  ${misc:Depends},
 Description: Android libinputflinger - development
  This package contains libinputflinger built from Android
@@ -398,7 +402,7 @@ Depends:
  libandroid-powermanager0 (= ${binary:Version}),
  libandroid-binder0-dev (= ${binary:Version}),
  libandroid-nativehelper0-dev (>= 0.0.4),
- libandroid-utils0-dev (>= 0.0.19),
+ libandroid-utils0-dev (>= 0.0.20),
  ${misc:Depends},
 Description: Android libpowermanager - development
  This package contains libpowermanager built from Android
@@ -450,6 +454,34 @@ Description: Android libsensorservice
  This package contains libsensorservice built from Android
  platform/frameworks/native.
 
+Package: libandroid-surfaceflinger0
+Build-Profiles: <pkg.android-frameworks-native.stage2>
+Priority: extra
+Section: libs
+Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Android libsurfaceflinger
+ This package contains libsurfaceflinger built from Android
+ platform/frameworks/native.
+
+Package: libandroid-surfaceflinger-ddmconnection0
+Build-Profiles: <pkg.android-frameworks-native.stage2>
+Priority: extra
+Section: libs
+Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Android libsurfaceflinger_ddmconnection
+ This package contains libsurfaceflinger_ddmconnection built from Android
+ platform/frameworks/native.
+
 Package: libandroid-ui0-dev
 Build-Profiles: <!pkg.android-frameworks-native.stage2>
 Priority: extra
@@ -459,11 +491,11 @@ Multi-Arch: same
 Depends:
  libandroid-ui0 (= ${binary:Version}),
  libandroid-binder0-dev (= ${binary:Version}),
- libandroid-cutils0-dev (>= 0.0.19),
+ libandroid-cutils0-dev (>= 0.0.20),
  libandroid-hardware0-dev (>= 0.0.1+b1),
- libandroid-log0-dev (>= 0.0.19),
- libandroid-sync0-dev (>= 0.0.19),
- libandroid-utils0-dev (>= 0.0.19),
+ libandroid-log0-dev (>= 0.0.20),
+ libandroid-sync0-dev (>= 0.0.20),
+ libandroid-utils0-dev (>= 0.0.20),
  ${misc:Depends},
 Description: Android libui - development
  This package contains libui built from Android platform/frameworks/native.
@@ -482,3 +514,19 @@ Depends:
  ${misc:Depends},
 Description: Android libui
  This package contains libui built from Android platform/frameworks/native.
+
+Package: surfaceflinger
+Build-Profiles: <pkg.android-frameworks-native.stage2>
+Priority: extra
+Section: misc
+Architecture: any
+Multi-Arch: foreign
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ android-servicemanager,
+Recommends:
+ android-logd,
+Description: Android native frameworks - surfaceflinger
+ This package contains surfaceflinger built from Android
+ platform/frameworks/native.

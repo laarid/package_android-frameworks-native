@@ -84,6 +84,8 @@ m4_define([lt_age], [lt_current])
 LT_VERSION_INFO="lt_current:lt_revision:lt_age"
 AC_SUBST([LT_VERSION_INFO])
 
+LT_LIB_DLLOAD
+
 LT_OUTPUT
 
 # Build stages
@@ -118,7 +120,7 @@ AC_SUBST([BIONIC_REQUIRED_VERSION])
 PKG_CHECK_MODULES([BIONIC], [android-bionic-$BIONIC_API_VERSION >= $BIONIC_REQUIRED_VERSION])
 
 SYSTEMCORE_API_VERSION=0.0
-SYSTEMCORE_REQUIRED_VERSION=0.0.19
+SYSTEMCORE_REQUIRED_VERSION=0.0.20
 AC_SUBST([SYSTEMCORE_API_VERSION])
 AC_SUBST([SYSTEMCORE_REQUIRED_VERSION])
 PKG_CHECK_MODULES([LOG], [android-log-$SYSTEMCORE_API_VERSION >= $SYSTEMCORE_REQUIRED_VERSION])
@@ -161,9 +163,43 @@ AM_COND_IF([WITH_STAGE_1],
 AM_COND_IF([WITH_STAGE_2],
   [PKG_CHECK_MODULES([BINDER], [android-binder-$LAARID_API_VERSION])
   PKG_CHECK_MODULES([UI], [android-ui-$LAARID_API_VERSION])
+  PKG_CHECK_MODULES([POWERMANAGER], [android-powermanager-$LAARID_API_VERSION])
   PKG_CHECK_MODULES([EGL], [egl])
   PKG_CHECK_MODULES([GLESV1_CM], [glesv1_cm])
-  PKG_CHECK_MODULES([GLESV2], [glesv2])]
+  PKG_CHECK_MODULES([GLESV2], [glesv2])
+
+  AC_CHECK_FUNC([__atomic_load_8], [],
+    [LIBS_save=$LIBS
+    AC_SEARCH_LIBS([__atomic_load_8], [atomic],
+      [ATOMIC_LIBS=$LIBS
+      AC_SUBST([ATOMIC_LIBS])],
+      [AC_MSG_ERROR([__atomic_load_8 missing])])
+    LIBS=$LIBS_save])
+
+  AC_CHECK_FUNC([timer_create], [],
+    [LIBS_save=$LIBS
+    AC_SEARCH_LIBS([timer_create], [rt],
+      [RT_LIBS=$LIBS
+      AC_SUBST([RT_LIBS])],
+      [AC_MSG_ERROR([timer_create missing])])
+    LIBS=$LIBS_save])
+
+  AC_MSG_CHECKING([for VKJSON])
+  AC_LANG_PUSH([C++])
+  VKJSON_LIBS="-lvkjson -lvulkan"
+  LIBS_save=$LIBS
+  LIBS="$LIBS $VKJSON_LIBS"
+  AC_LINK_IFELSE(
+    [AC_LANG_PROGRAM([
+#include <vkjson/vkjson.h>
+      ], [
+VkJsonInstance instance = VkJsonGetInstance();
+      ])],
+    [AC_MSG_RESULT([yes])
+    AC_SUBST([VKJSON_LIBS])],
+    [AC_MSG_FAILURE([libvkjson-dev not installed])])
+  LIBS=$LIBS_save
+  AC_LANG_POP([C++])]
 )
 
 dnl Extra Features
@@ -192,10 +228,76 @@ AM_CONDITIONAL([HAVE_DEV_BINDER], [test "x${c_cv_file_dev_binder}" = xyes])
 
 AM_COND_IF([WITH_STAGE_2],
   [AC_ARG_ENABLE([fence-sync],
-    [AS_HELP_STRING([--enable-fence-sync], [Use fence sync])])]
+    [AS_HELP_STRING([--enable-fence-sync], [Use fence sync])])
+
+  # surfaceflinger specific options
+  # -------------------------------
+  AC_ARG_WITH([hwc2],
+    [AS_HELP_STRING([--with-hwc2],
+      [Use hardware composer version 2. Default: no])])
+  AC_ARG_ENABLE([sf-context-priority],
+    [AS_HELP_STRING([--enable-sf-context-priority],
+      [Enable surfaceflinger context priority. Default: no])])
+  AC_ARG_ENABLE([sf-triple-buffering],
+    [AS_HELP_STRING([--enable-sf-triple-buffering],
+      [Enable surfaceflinger triple buffering. Default: yes])])
+  AC_ARG_ENABLE([sf-force-hwc-copy],
+    [AS_HELP_STRING([--enable-sf-force-hwc-copy],
+      [Enable surfaceflinger force hwc copying on virtual displays. Default: no])])
+  AC_ARG_WITH([num-fb-surface-buffers],
+    [AS_HELP_STRING([--with-num-fb-surface-buffers],
+      [Use num framebuffer surface buffers. Default: 0])],
+    [NUM_FRAMEBUFFER_SURFACE_BUFFERS=$withval])
+  AC_ARG_WITH([sf-sync-framework],
+    [AS_HELP_STRING([--with-sf-sync-framework],
+      [Use sync framework in surfaceflinger. Default: yes])])
+  AC_ARG_ENABLE([cpusets],
+    [AS_HELP_STRING([--enable-cpusets],
+      [Enable use of /dev/cpuset @<:@default=no@:>@])])
+
+  VSYNC_EVENT_PHASE_OFFSET_NS=0
+  AC_ARG_WITH([vsync-event-phase-offset-ns],
+    [AS_HELP_STRING([--with-vsync-event-phase-offset-ns],
+      Specify VSYNC_EVENT_PHASE_OFFSET_NS. Default: 0)],
+    [VSYNC_EVENT_PHASE_OFFSET_NS=${withval}
+    AC_SUBST([VSYNC_EVENT_PHASE_OFFSET_NS])])
+
+  SF_VSYNC_EVENT_PHASE_OFFSET_NS=0
+  AC_ARG_WITH([sf-vsync-event-phase-offset-ns],
+    [AS_HELP_STRING([--with-sf-vsync-event-phase-offset-ns],
+      Specify SF_VSYNC_EVENT_PHASE_OFFSET_NS. Default: 0)],
+    [SF_VSYNC_EVENT_PHASE_OFFSET_NS=${withval}
+    AC_SUBST([SF_VSYNC_EVENT_PHASE_OFFSET_NS])])
+
+  PRESENT_TIME_OFFSET_FROM_VSYNC_NS=0
+  AC_ARG_WITH([present-time-offset-from-vsync-ns],
+    [AS_HELP_STRING([--with-present-time-offset-from-vsync-ns],
+      Specify PRESENT_TIME_OFFSET_FROM_VSYNC_NS. Default: 0)],
+    [PRESENT_TIME_OFFSET_FROM_VSYNC_NS=${withval}
+    AC_SUBST([PRESENT_TIME_OFFSET_FROM_VSYNC_NS])])
+
+  MAX_VIRTUAL_DISPLAY_DIMENSION=0
+  AC_ARG_WITH([max-virtual-display-dimension],
+    [AS_HELP_STRING([--with-max-virtual-display-dimension],
+      Specify MAX_VIRTUAL_DISPLAY_DIMENSION. Default: 0)],
+    [MAX_VIRTUAL_DISPLAY_DIMENSION=${withval}
+    AC_SUBST([MAX_VIRTUAL_DISPLAY_DIMENSION])])
+  ]
 ) dnl WITH_STAGE_2
 
 AM_CONDITIONAL([ENABLE_FENCE_SYNC], [test "x${enable_fence_sync}" != "xno"])
+AM_CONDITIONAL([USE_HWC2], [test "x${with_hwc2}" = "xyes"])
+AM_CONDITIONAL([ENABLE_SF_CONTEXT_PRIORITY],
+  [test "x${enable_sf_context_priority}" = "xyes"])
+AM_CONDITIONAL([DISABLE_SF_TRIPLE_BUFFERING],
+  [test "x${enable_sf_triple_buffering}" = "xno"])
+AM_CONDITIONAL([ENABLE_FORCE_HWC_COPY_FOR_VIRTUAL_DISPLAYS],
+  [test "x${enable_sf_force_hwc_copying}" = "xyes"])
+AM_CONDITIONAL([USE_NUM_FRAMEBUFFER_SURFACE_BUFFERS],
+  [test -n "${with_num_fb_surface_buffers}"])
+AM_CONDITIONAL([WITHOUT_SF_SYNC_FRAMEWORK],
+  [test "x${with_sf_sync_framework}" = "xno"])
+AM_CONDITIONAL([ENABLE_CPUSETS], [test "x${enable_cpusets}" = "xyes"])
 
 # GTest
 # -----

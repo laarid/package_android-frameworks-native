@@ -92,6 +92,7 @@ include $(srcdir)/opengl/libs/Android.mk
 include $(srcdir)/libs/gui/Android.mk
 # ---------------------
 include $(srcdir)/services/sensorservice/Android.mk
+include $(srcdir)/services/surfaceflinger/Android.mk
 endif
 endif
 
