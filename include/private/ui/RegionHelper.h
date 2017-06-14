@@ -78,7 +78,6 @@ public:
             int inside = spanner.next(current.top, current.bottom);
             spannerInner.prepare(inside);
             do {
-                TYPE left, right;
                 int inside = spannerInner.next(current.left, current.right);
                 if ((op_mask >> inside) & 1) {
                     if (current.left < current.right && 
