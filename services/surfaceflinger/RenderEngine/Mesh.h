@@ -18,6 +18,7 @@
 #define SF_RENDER_ENGINE_MESH_H
 
 #include <stdint.h>
+#include <stddef.h>
 
 namespace android {
 

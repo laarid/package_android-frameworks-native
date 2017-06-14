@@ -37,6 +37,7 @@
 #include <private/gui/LayerState.h>
 
 #include <list>
+#include <memory>
 
 #include "FrameTracker.h"
 #include "Client.h"

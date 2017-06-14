@@ -15,6 +15,7 @@
  */
 
 #include <sys/resource.h>
+#include <signal.h>
 
 #include <cutils/sched_policy.h>
 #include <binder/IServiceManager.h>

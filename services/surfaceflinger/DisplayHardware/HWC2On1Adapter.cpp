@@ -27,9 +27,13 @@
 #include <utils/Trace.h>
 
 #include <cstdlib>
+#include <cstring>
+#include <cmath>
 #include <chrono>
 #include <inttypes.h>
 #include <sstream>
+#include <memory>
+#include <algorithm>
 
 using namespace std::chrono_literals;
 

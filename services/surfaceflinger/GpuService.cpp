@@ -18,7 +18,7 @@
 
 #include <binder/Parcel.h>
 #include <utils/String8.h>
-#include <vkjson.h>
+#include <vkjson/vkjson.h>
 
 namespace android {
 
