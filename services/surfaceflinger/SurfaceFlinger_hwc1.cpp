@@ -56,7 +56,7 @@
 #include <utils/Timers.h>
 #include <utils/Trace.h>
 
-#include <private/android_filesystem_config.h>
+#include <android/uidmap.h>
 #include <private/gui/SyncFeatures.h>
 
 #include "Client.h"
@@ -2570,9 +2570,9 @@ status_t SurfaceFlinger::dump(int fd, const Vector<String16>& args)
     String8 result;
 
     IPCThreadState* ipc = IPCThreadState::self();
-    const int pid = ipc->getCallingPid();
-    const int uid = ipc->getCallingUid();
-    if ((uid != AID_SHELL) &&
+    const pid_t pid = ipc->getCallingPid();
+    const uid_t uid = ipc->getCallingUid();
+    if ((uid != AUID_SHELL) &&
             !PermissionCache::checkPermission(sDump, pid, uid)) {
         result.appendFormat("Permission Denial: "
                 "can't dump SurfaceFlinger from pid=%d, uid=%d\n", pid, uid);
@@ -2952,9 +2952,9 @@ status_t SurfaceFlinger::onTransact(
         {
             // codes that require permission check
             IPCThreadState* ipc = IPCThreadState::self();
-            const int pid = ipc->getCallingPid();
-            const int uid = ipc->getCallingUid();
-            if ((uid != AID_GRAPHICS && uid != AID_SYSTEM) &&
+            const pid_t pid = ipc->getCallingPid();
+            const uid_t uid = ipc->getCallingUid();
+            if ((uid != AUID_GRAPHICS && uid != AUID_SYSTEM) &&
                     !PermissionCache::checkPermission(sAccessSurfaceFlinger, pid, uid)) {
                 ALOGE("Permission Denial: "
                         "can't access SurfaceFlinger pid=%d, uid=%d", pid, uid);
@@ -2966,9 +2966,9 @@ status_t SurfaceFlinger::onTransact(
         {
             // codes that require permission check
             IPCThreadState* ipc = IPCThreadState::self();
-            const int pid = ipc->getCallingPid();
-            const int uid = ipc->getCallingUid();
-            if ((uid != AID_GRAPHICS) &&
+            const pid_t pid = ipc->getCallingPid();
+            const uid_t uid = ipc->getCallingUid();
+            if ((uid != AUID_GRAPHICS) &&
                     !PermissionCache::checkPermission(sReadFramebuffer, pid, uid)) {
                 ALOGE("Permission Denial: "
                         "can't read framebuffer pid=%d, uid=%d", pid, uid);
@@ -2983,8 +2983,8 @@ status_t SurfaceFlinger::onTransact(
         CHECK_INTERFACE(ISurfaceComposer, data, reply);
         if (CC_UNLIKELY(!PermissionCache::checkCallingPermission(sHardwareTest))) {
             IPCThreadState* ipc = IPCThreadState::self();
-            const int pid = ipc->getCallingPid();
-            const int uid = ipc->getCallingUid();
+            const pid_t pid = ipc->getCallingPid();
+            const uid_t uid = ipc->getCallingUid();
             ALOGE("Permission Denial: "
                     "can't access SurfaceFlinger pid=%d, uid=%d", pid, uid);
             return PERMISSION_DENIED;

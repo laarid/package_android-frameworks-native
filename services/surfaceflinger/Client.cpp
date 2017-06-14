@@ -20,7 +20,7 @@
 #include <binder/PermissionCache.h>
 #include <binder/IPCThreadState.h>
 
-#include <private/android_filesystem_config.h>
+#include <android/uidmap.h>
 
 #include "Client.h"
 #include "Layer.h"
@@ -90,10 +90,10 @@ status_t Client::onTransact(
 {
     // these must be checked
      IPCThreadState* ipc = IPCThreadState::self();
-     const int pid = ipc->getCallingPid();
-     const int uid = ipc->getCallingUid();
-     const int self_pid = getpid();
-     if (CC_UNLIKELY(pid != self_pid && uid != AID_GRAPHICS && uid != AID_SYSTEM && uid != 0)) {
+     const pid_t pid = ipc->getCallingPid();
+     const uid_t uid = ipc->getCallingUid();
+     const pid_t self_pid = getpid();
+     if (CC_UNLIKELY(pid != self_pid && uid != AUID_GRAPHICS && uid != AUID_SYSTEM && uid != 0)) {
          // we're called from a different process, do the real check
          if (!PermissionCache::checkCallingPermission(sAccessSurfaceFlinger))
          {
