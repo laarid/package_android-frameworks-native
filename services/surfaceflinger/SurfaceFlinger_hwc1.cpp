@@ -2645,7 +2645,7 @@ status_t SurfaceFlinger::dump(int fd, const Vector<String16>& args)
             mStateLock.unlock();
         }
     }
-    write(fd, result.string(), result.size());
+    TEMP_FAILURE_RETRY(write(fd, result.string(), result.size()));
     return NO_ERROR;
 }
 

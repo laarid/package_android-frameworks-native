@@ -36,6 +36,14 @@
 #include <vector>
 #include <memory>
 
+#if defined(__clang__)
+#define __android_warn_unused_result [[clang::warn_unused_result]]
+#elif defined(__GNUC__)
+#define __android_warn_unused_result __attribute__((warn_unused_result))
+#else
+#define __android_warn_unused_result
+#endif
+
 namespace android {
     class Fence;
     class FloatRect;
@@ -98,7 +106,7 @@ private:
     // Initialization methods
 
     template <typename PFN>
-    [[clang::warn_unused_result]] bool loadFunctionPointer(
+    __android_warn_unused_result bool loadFunctionPointer(
             FunctionDescriptor desc, PFN& outPFN) {
         auto intDesc = static_cast<int32_t>(desc);
         auto pfn = mHwcDevice->getFunction(mHwcDevice, intDesc);
@@ -273,48 +281,48 @@ public:
 
     // Required by HWC2
 
-    [[clang::warn_unused_result]] Error acceptChanges();
-    [[clang::warn_unused_result]] Error createLayer(
+    __android_warn_unused_result Error acceptChanges();
+    __android_warn_unused_result Error createLayer(
             std::shared_ptr<Layer>* outLayer);
-    [[clang::warn_unused_result]] Error getActiveConfig(
+    __android_warn_unused_result Error getActiveConfig(
             std::shared_ptr<const Config>* outConfig) const;
-    [[clang::warn_unused_result]] Error getChangedCompositionTypes(
+    __android_warn_unused_result Error getChangedCompositionTypes(
             std::unordered_map<std::shared_ptr<Layer>, Composition>* outTypes);
-    [[clang::warn_unused_result]] Error getColorModes(
+    __android_warn_unused_result Error getColorModes(
             std::vector<int32_t>* outModes) const;
 
     // Doesn't call into the HWC2 device, so no errors are possible
     std::vector<std::shared_ptr<const Config>> getConfigs() const;
 
-    [[clang::warn_unused_result]] Error getName(std::string* outName) const;
-    [[clang::warn_unused_result]] Error getRequests(
+    __android_warn_unused_result Error getName(std::string* outName) const;
+    __android_warn_unused_result Error getRequests(
             DisplayRequest* outDisplayRequests,
             std::unordered_map<std::shared_ptr<Layer>, LayerRequest>*
                     outLayerRequests);
-    [[clang::warn_unused_result]] Error getType(DisplayType* outType) const;
-    [[clang::warn_unused_result]] Error supportsDoze(bool* outSupport) const;
-    [[clang::warn_unused_result]] Error getHdrCapabilities(
+    __android_warn_unused_result Error getType(DisplayType* outType) const;
+    __android_warn_unused_result Error supportsDoze(bool* outSupport) const;
+    __android_warn_unused_result Error getHdrCapabilities(
             std::unique_ptr<android::HdrCapabilities>* outCapabilities) const;
-    [[clang::warn_unused_result]] Error getReleaseFences(
+    __android_warn_unused_result Error getReleaseFences(
             std::unordered_map<std::shared_ptr<Layer>,
                     android::sp<android::Fence>>* outFences) const;
-    [[clang::warn_unused_result]] Error present(
+    __android_warn_unused_result Error present(
             android::sp<android::Fence>* outRetireFence);
-    [[clang::warn_unused_result]] Error setActiveConfig(
+    __android_warn_unused_result Error setActiveConfig(
             const std::shared_ptr<const Config>& config);
-    [[clang::warn_unused_result]] Error setClientTarget(
+    __android_warn_unused_result Error setClientTarget(
             buffer_handle_t target,
             const android::sp<android::Fence>& acquireFence,
             android_dataspace_t dataspace);
-    [[clang::warn_unused_result]] Error setColorMode(int32_t mode);
-    [[clang::warn_unused_result]] Error setColorTransform(
+    __android_warn_unused_result Error setColorMode(int32_t mode);
+    __android_warn_unused_result Error setColorTransform(
             const android::mat4& matrix, android_color_transform_t hint);
-    [[clang::warn_unused_result]] Error setOutputBuffer(
+    __android_warn_unused_result Error setOutputBuffer(
             const android::sp<android::GraphicBuffer>& buffer,
             const android::sp<android::Fence>& releaseFence);
-    [[clang::warn_unused_result]] Error setPowerMode(PowerMode mode);
-    [[clang::warn_unused_result]] Error setVsyncEnabled(Vsync enabled);
-    [[clang::warn_unused_result]] Error validate(uint32_t* outNumTypes,
+    __android_warn_unused_result Error setPowerMode(PowerMode mode);
+    __android_warn_unused_result Error setVsyncEnabled(Vsync enabled);
+    __android_warn_unused_result Error validate(uint32_t* outNumTypes,
             uint32_t* outNumRequests);
 
     // Other Display methods
@@ -363,28 +371,28 @@ public:
     bool isAbandoned() const { return mDisplay.expired(); }
     hwc2_layer_t getId() const { return mId; }
 
-    [[clang::warn_unused_result]] Error setCursorPosition(int32_t x, int32_t y);
-    [[clang::warn_unused_result]] Error setBuffer(buffer_handle_t buffer,
+    __android_warn_unused_result Error setCursorPosition(int32_t x, int32_t y);
+    __android_warn_unused_result Error setBuffer(buffer_handle_t buffer,
             const android::sp<android::Fence>& acquireFence);
-    [[clang::warn_unused_result]] Error setSurfaceDamage(
+    __android_warn_unused_result Error setSurfaceDamage(
             const android::Region& damage);
 
-    [[clang::warn_unused_result]] Error setBlendMode(BlendMode mode);
-    [[clang::warn_unused_result]] Error setColor(hwc_color_t color);
-    [[clang::warn_unused_result]] Error setCompositionType(Composition type);
-    [[clang::warn_unused_result]] Error setDataspace(
+    __android_warn_unused_result Error setBlendMode(BlendMode mode);
+    __android_warn_unused_result Error setColor(hwc_color_t color);
+    __android_warn_unused_result Error setCompositionType(Composition type);
+    __android_warn_unused_result Error setDataspace(
             android_dataspace_t dataspace);
-    [[clang::warn_unused_result]] Error setDisplayFrame(
+    __android_warn_unused_result Error setDisplayFrame(
             const android::Rect& frame);
-    [[clang::warn_unused_result]] Error setPlaneAlpha(float alpha);
-    [[clang::warn_unused_result]] Error setSidebandStream(
+    __android_warn_unused_result Error setPlaneAlpha(float alpha);
+    __android_warn_unused_result Error setSidebandStream(
             const native_handle_t* stream);
-    [[clang::warn_unused_result]] Error setSourceCrop(
+    __android_warn_unused_result Error setSourceCrop(
             const android::FloatRect& crop);
-    [[clang::warn_unused_result]] Error setTransform(Transform transform);
-    [[clang::warn_unused_result]] Error setVisibleRegion(
+    __android_warn_unused_result Error setTransform(Transform transform);
+    __android_warn_unused_result Error setVisibleRegion(
             const android::Region& region);
-    [[clang::warn_unused_result]] Error setZOrder(uint32_t z);
+    __android_warn_unused_result Error setZOrder(uint32_t z);
 
 private:
     std::weak_ptr<Display> mDisplay;
@@ -394,5 +402,7 @@ private:
 };
 
 } // namespace HWC2
+
+#undef __android_warn_unused_result
 
 #endif // ANDROID_SF_HWC2_H
