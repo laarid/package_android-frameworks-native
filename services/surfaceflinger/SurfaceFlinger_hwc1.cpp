@@ -22,7 +22,7 @@
 #include <math.h>
 #include <dlfcn.h>
 #include <inttypes.h>
-#include <stdatomic.h>
+#include <atomic>
 
 #include <EGL/egl.h>
 
@@ -3172,7 +3172,7 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
             barrier.close();
             // Prevent stores to this->{code, data, reply} from being
             // reordered later than the construction of Message.
-            atomic_thread_fence(memory_order_release);
+            std::atomic_thread_fence(std::memory_order_release);
             looper->sendMessage(this, Message(MSG_API_CALL));
             barrier.wait();
         }
@@ -3186,7 +3186,7 @@ class GraphicProducerWrapper : public BBinder, public MessageHandler {
     virtual void handleMessage(const Message& message) {
         int what = message.what;
         // Prevent reads below from happening before the read from Message
-        atomic_thread_fence(memory_order_acquire);
+        std::atomic_thread_fence(std::memory_order_acquire);
         if (what == MSG_API_CALL) {
             result = IInterface::asBinder(impl)->transact(code, data[0], reply);
             barrier.open();
@@ -3221,7 +3221,7 @@ public:
         exitPending = true;
         // Ensure this->result is visible to the binder thread before it
         // handles the message.
-        atomic_thread_fence(memory_order_release);
+        std::atomic_thread_fence(std::memory_order_release);
         looper->sendMessage(this, Message(MSG_EXIT));
     }
 };
