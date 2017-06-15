@@ -11,7 +11,5 @@ bin_PROGRAMS += \
 	%reldir%/sensorservicetest.cpp
 
 %canon_reldir%_test_sensorservice_LDADD = \
-	$(CUTILS_LIBS) \
 	$(UTILS_LIBS) \
-	$(UI_LIBS) \
 	libs/gui/libandroid-gui.la
