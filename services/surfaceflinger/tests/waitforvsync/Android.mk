@@ -1,14 +1,9 @@
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
+bin_PROGRAMS += \
+    %reldir%/test-waitforvsync
 
-LOCAL_SRC_FILES:= \
-	waitforvsync.cpp
+%canon_reldir%_test_waitforvsync_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS)
 
-LOCAL_SHARED_LIBRARIES := \
-	libcutils \
-
-LOCAL_MODULE:= test-waitforvsync
-
-LOCAL_MODULE_TAGS := tests
-
-include $(BUILD_EXECUTABLE)
+%canon_reldir%_test_waitforvsync_SOURCES = \
+    %reldir%/waitforvsync.cpp

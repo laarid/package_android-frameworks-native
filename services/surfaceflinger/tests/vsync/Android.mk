@@ -1,18 +1,20 @@
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
+bin_PROGRAMS += \
+    %reldir%/test-vsync-events
 
-LOCAL_SRC_FILES:= \
-	vsync.cpp
+%canon_reldir%_test_vsync_events_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    $(BINDER_CFLAGS) \
+    $(UI_CFLAGS)
 
-LOCAL_SHARED_LIBRARIES := \
-	libcutils \
-	libutils \
-	libbinder \
-    libui \
-    libgui
+%canon_reldir%_test_vsync_events_CXXFLAGS = \
+    $(AM_CXXFLAGS) \
+    -Wno-multichar
 
-LOCAL_MODULE:= test-vsync-events
+%canon_reldir%_test_vsync_events_SOURCES = \
+    %reldir%/vsync.cpp
 
-LOCAL_MODULE_TAGS := tests
-
-include $(BUILD_EXECUTABLE)
+%canon_reldir%_test_vsync_events_LDADD = \
+    $(UTILS_LIBS) \
+    libs/gui/libandroid-gui.la

@@ -530,3 +530,16 @@ Recommends:
 Description: Android native frameworks - surfaceflinger
  This package contains surfaceflinger built from Android
  platform/frameworks/native.
+
+Package: surfaceflinger-tests
+Build-Profiles: <pkg.android-frameworks-native.stage2>
+Priority: extra
+Section: libdevel
+Architecture: any
+Multi-Arch: no
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ surfaceflinger,
+Description: Android surfaceflinger - test tools
+ This package contains test tools for surfaceflinger.

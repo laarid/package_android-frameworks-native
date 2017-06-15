@@ -1,33 +1,44 @@
 # Build the unit tests,
-LOCAL_PATH:= $(call my-dir)
-include $(CLEAR_VARS)
-LOCAL_ADDITIONAL_DEPENDENCIES := $(LOCAL_PATH)/Android.mk
+if HAVE_GTEST
+check_PROGRAMS += \
+    %reldir%/SurfaceFlinger_test
 
-LOCAL_MODULE := SurfaceFlinger_test
+if HAVE_DEV_BINDER
+TESTS += \
+    %reldir%/SurfaceFlinger_test
+endif
 
-LOCAL_MODULE_TAGS := tests
+%canon_reldir%_SurfaceFlinger_test_CPPFLAGS = \
+    $(AM_CPPFLAGS) \
+    $(BINDER_CFLAGS) \
+    $(CUTILS_CFLAGS) \
+    $(LOG_CFLAGS) \
+    $(UTILS_CFLAGS) \
+    $(UI_CFLAGS) \
+    $(EGL_CFLAGS) \
+    $(GTEST_CPPFLAGS)
 
-LOCAL_SRC_FILES := \
-    Transaction_test.cpp \
+%canon_reldir%_SurfaceFlinger_test_SOURCES = \
+    %reldir%/Transaction_test.cpp
 
-LOCAL_SHARED_LIBRARIES := \
-	libEGL \
-	libGLESv2 \
-	libbinder \
-	libcutils \
-	libgui \
-	libui \
-	libutils \
+%canon_reldir%_SurfaceFlinger_test_LDADD = \
+    $(EGL_LIBS) \
+    $(GLESV2_LIBS) \
+    $(BINDER_LIBS) \
+    $(CUTILS_LIBS) \
+    $(LOG_LIBS) \
+    libs/gui/libandroid-gui.la \
+    $(UI_LIBS) \
+    $(UTILS_LIBS) \
+    $(GTEST_LIBS)
 
-# Build the binary to $(TARGET_OUT_DATA_NATIVE_TESTS)/$(LOCAL_MODULE)
-# to integrate with auto-test framework.
-include $(BUILD_NATIVE_TEST)
+%canon_reldir%_SurfaceFlinger_test_DEPENDENCIES = \
+    libs/gui/libandroid-gui.la \
+    $(GTEST_LIBS)
+endif # HAVE_GTEST
 
 # Include subdirectory makefiles
 # ============================================================
 
-# If we're building with ONE_SHOT_MAKEFILE (mm, mmm), then what the framework
-# team really wants is to build the stuff defined by this makefile.
-ifeq (,$(ONE_SHOT_MAKEFILE))
-include $(call first-makefiles-under,$(LOCAL_PATH))
-endif
+include $(srcdir)/%reldir%/vsync/Android.mk
+include $(srcdir)/%reldir%/waitforvsync/Android.mk

@@ -259,3 +259,5 @@ lib_LTLIBRARIES += \
 %canon_reldir%_libandroid_surfaceflinger_ddmconnection_la_LDFLAGS = \
     $(AM_LDFLAGS) \
     $(libtool_opts)
+
+include $(srcdir)/%reldir%/tests/Android.mk
